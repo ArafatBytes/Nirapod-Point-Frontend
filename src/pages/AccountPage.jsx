@@ -9,6 +9,7 @@ import { Box, Flex, Spinner, Button } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 import FixedPlugin from "../components/fixedPlugin/FixedPlugin";
 import { useColorModeValue } from "@chakra-ui/react";
+import { API_BASE_URL } from "../utils/api";
 
 export default function AccountPage() {
   const { user, refreshUser } = useUser();
@@ -61,7 +62,7 @@ export default function AccountPage() {
 
     setCrimeCountLoading(true);
     try {
-      const res = await fetch("/api/users/me/crime-count", {
+      const res = await fetch(`${API_BASE_URL}/users/me/crime-count`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("jwt")}` },
       });
       if (!res.ok) throw new Error("Failed to fetch crime count");
@@ -94,7 +95,7 @@ export default function AccountPage() {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch("/api/users/me", {
+      const res = await fetch(`${API_BASE_URL}/users/me`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -137,7 +138,7 @@ export default function AccountPage() {
       setPhotoLoading(true);
       // Update photo in backend
       try {
-        const res = await fetch("/api/users/me", {
+        const res = await fetch(`${API_BASE_URL}/users/me`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -466,17 +467,20 @@ export default function AccountPage() {
                 return;
               }
               try {
-                const res = await fetch("/api/users/me/change-password", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("jwt")}`,
-                  },
-                  body: JSON.stringify({
-                    currentPassword: pwCurrent,
-                    newPassword: pwNew,
-                  }),
-                });
+                const res = await fetch(
+                  `${API_BASE_URL}/users/me/change-password`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                      Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+                    },
+                    body: JSON.stringify({
+                      currentPassword: pwCurrent,
+                      newPassword: pwNew,
+                    }),
+                  }
+                );
                 if (!res.ok) throw new Error(await res.text());
                 setPwSuccess("Password changed successfully!");
                 toast.success("Password changed successfully!");

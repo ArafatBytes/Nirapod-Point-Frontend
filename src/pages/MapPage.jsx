@@ -46,6 +46,7 @@ import {
 import { SearchIcon } from "@chakra-ui/icons";
 import { AnimatePresence } from "framer-motion";
 import FixedPlugin from "../components/fixedPlugin/FixedPlugin";
+import { API_BASE_URL } from "../utils/api";
 
 const crimeTypeColors = {
   murder: "#FF0000",
@@ -283,7 +284,7 @@ const MapPage = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        `/api/crimes/bounds?minLat=${bounds._southWest.lat}&maxLat=${bounds._northEast.lat}&minLng=${bounds._southWest.lng}&maxLng=${bounds._northEast.lng}&type=${type}`,
+        `${API_BASE_URL}/crimes/bounds?minLat=${bounds._southWest.lat}&maxLat=${bounds._northEast.lat}&minLng=${bounds._southWest.lng}&maxLng=${bounds._northEast.lng}&type=${type}`,
         {
           headers: { Authorization: jwt ? `Bearer ${jwt}` : undefined },
         }
@@ -388,7 +389,7 @@ const MapPage = () => {
         setRoute([]);
 
         try {
-          const res = await fetch("/api/routes/safest", {
+          const res = await fetch(`${API_BASE_URL}/routes/safest`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

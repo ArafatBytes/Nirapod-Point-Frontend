@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import FixedPlugin from "../components/fixedPlugin/FixedPlugin";
+import { API_BASE_URL } from "../utils/api";
 
 const crimeTypeColors = {
   murder: "#FF0000",
@@ -80,7 +81,7 @@ export default function HistoryPage() {
     async function fetchCrimes() {
       setLoading(true);
       try {
-        const res = await fetch("/api/crimes", {
+        const res = await fetch(`${API_BASE_URL}/crimes`, {
           headers: { Authorization: jwt ? `Bearer ${jwt}` : undefined },
         });
         if (!res.ok) throw new Error("Failed to fetch crimes");

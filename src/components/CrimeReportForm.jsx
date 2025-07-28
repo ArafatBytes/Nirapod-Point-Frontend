@@ -17,6 +17,7 @@ import {
   useColorModeValue,
   Spinner,
 } from "@chakra-ui/react";
+import { API_BASE_URL } from "../utils/api";
 
 function CrimeReportForm({ lat: propLat, lng: propLng, onSuccess, onCancel }) {
   const location = useLocation();
@@ -59,7 +60,7 @@ function CrimeReportForm({ lat: propLat, lng: propLng, onSuccess, onCancel }) {
     }
     setLoading(true);
     try {
-      const res = await fetch("/api/crimes", {
+      const res = await fetch(`${API_BASE_URL}/crimes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

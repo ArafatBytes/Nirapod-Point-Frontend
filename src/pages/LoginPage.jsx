@@ -30,6 +30,7 @@ import Nft5 from "../assets/img/nfts/Nft5.png";
 import { MdEmail, MdLock, MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { FiPhone } from "react-icons/fi";
+import { API_BASE_URL } from "../utils/api";
 
 // Add animation variants
 const containerVariants = {
@@ -419,11 +420,14 @@ export default function LoginPage() {
                         setResetError("");
                         setResetSuccess("");
                         try {
-                          const res = await fetch("/api/auth/request-reset", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ email: resetEmail }),
-                          });
+                          const res = await fetch(
+                            `${API_BASE_URL}/auth/request-reset`,
+                            {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({ email: resetEmail }),
+                            }
+                          );
                           if (!res.ok) throw new Error(await res.text());
                           setResetStep(2);
                           setResetSuccess(
@@ -560,15 +564,18 @@ export default function LoginPage() {
                         setResetError("");
                         setResetSuccess("");
                         try {
-                          const res = await fetch("/api/auth/reset-password", {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({
-                              email: resetEmail,
-                              otp: resetOtp,
-                              newPassword: resetNew,
-                            }),
-                          });
+                          const res = await fetch(
+                            `${API_BASE_URL}/auth/reset-password`,
+                            {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({
+                                email: resetEmail,
+                                otp: resetOtp,
+                                newPassword: resetNew,
+                              }),
+                            }
+                          );
                           if (!res.ok) throw new Error(await res.text());
                           setResetSuccess(
                             "Password reset successful! You can now log in."

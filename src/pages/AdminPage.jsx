@@ -27,6 +27,7 @@ import Banner from "../views/admin/profile/components/Banner";
 import avatar4 from "../assets/img/avatars/avatar4.png";
 import bannerImg from "../assets/img/auth/banner.png";
 import FixedPlugin from "../components/fixedPlugin/FixedPlugin";
+import { API_BASE_URL } from "../utils/api";
 
 const statusOptions = [
   { label: "All", value: "all" },
@@ -63,14 +64,14 @@ export default function AdminPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`/api/users?verified=${status}`, {
+      const res = await fetch(`${API_BASE_URL}/users?verified=${status}`, {
         headers: { Authorization: `Bearer ${jwt}` },
       });
       if (!res.ok) throw new Error(await res.text());
       const usersData = await res.json();
       setUsers(usersData);
       // Fetch all user crime counts in one request
-      const countsRes = await fetch(`/api/users/crime-counts`, {
+      const countsRes = await fetch(`${API_BASE_URL}/users/crime-counts`, {
         headers: { Authorization: `Bearer ${jwt}` },
       });
       let counts = {};
@@ -94,10 +95,13 @@ export default function AdminPage() {
     setActionLoading(id + approve);
     setError("");
     try {
-      const res = await fetch(`/api/users/${id}/verify?approve=${approve}`, {
-        method: "PATCH",
-        headers: { Authorization: `Bearer ${jwt}` },
-      });
+      const res = await fetch(
+        `${API_BASE_URL}/users/${id}/verify?approve=${approve}`,
+        {
+          method: "PATCH",
+          headers: { Authorization: `Bearer ${jwt}` },
+        }
+      );
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
       // Refresh users after action
@@ -211,7 +215,7 @@ export default function AdminPage() {
                     batch.map(async (u) => {
                       try {
                         const res = await fetch(
-                          `/api/users/${u.id}/verify?approve=true`,
+                          `${API_BASE_URL}/users/${u.id}/verify?approve=true`,
                           {
                             method: "PATCH",
                             headers: { Authorization: `Bearer ${jwt}` },
@@ -636,7 +640,7 @@ export default function AdminPage() {
                         setError("");
                         try {
                           const res = await fetch(
-                            `/api/users/${userToDelete.id}`,
+                            `${API_BASE_URL}/users/${userToDelete.id}`,
                             {
                               method: "DELETE",
                               headers: { Authorization: `Bearer ${jwt}` },

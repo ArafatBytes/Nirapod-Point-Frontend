@@ -35,6 +35,7 @@ import {
 } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
 import FixedPlugin from "../components/fixedPlugin/FixedPlugin";
+import { API_BASE_URL } from "../utils/api";
 
 // Create the HeatmapLayer component from the factory
 const HeatmapLayer = HeatmapLayerFactory();
@@ -264,13 +265,13 @@ export default function RiskAnalysisPage() {
       try {
         const [crimesRes, statsRes] = await Promise.all([
           fetch(
-            `/api/crimes/bounds?minLat=${sw.lat}&maxLat=${ne.lat}&minLng=${sw.lng}&maxLng=${ne.lng}&type=${type}`,
+            `${API_BASE_URL}/crimes/bounds?minLat=${sw.lat}&maxLat=${ne.lat}&minLng=${sw.lng}&maxLng=${ne.lng}&type=${type}`,
             {
               headers: { Authorization: jwt ? `Bearer ${jwt}` : undefined },
               signal: abortController.signal,
             }
           ),
-          fetch("/api/crimes/district-stats", {
+          fetch(`${API_BASE_URL}/crimes/district-stats`, {
             headers: { Authorization: jwt ? `Bearer ${jwt}` : undefined },
             signal: abortController.signal,
           }),

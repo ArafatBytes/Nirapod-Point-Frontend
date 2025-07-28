@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import { API_BASE_URL } from "../utils/api";
 
 const UserContext = createContext();
 
@@ -16,7 +17,7 @@ export function UserProvider({ children }) {
         return;
       }
       try {
-        const res = await fetch("/api/auth/me", {
+        const res = await fetch(`${API_BASE_URL}/auth/me`, {
           headers: { Authorization: `Bearer ${jwt}` },
         });
         if (res.ok) {
@@ -41,7 +42,7 @@ export function UserProvider({ children }) {
   // Login function
   async function login({ emailOrPhone, password }) {
     try {
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ emailOrPhone, password }),
@@ -52,7 +53,7 @@ export function UserProvider({ children }) {
       localStorage.setItem("jwt", data.token);
       toast.success("Login successful!");
       // Fetch user info
-      const meRes = await fetch("/api/auth/me", {
+      const meRes = await fetch(`${API_BASE_URL}/auth/me`, {
         headers: { Authorization: `Bearer ${data.token}` },
       });
       setUser(await meRes.json());
@@ -74,7 +75,7 @@ export function UserProvider({ children }) {
   // Register function
   async function register(formData) {
     try {
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch(`${API_BASE_URL}/auth/register`, {
         method: "POST",
         body: formData,
       });
@@ -95,7 +96,7 @@ export function UserProvider({ children }) {
     if (!jwt) return;
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/me", {
+      const res = await fetch(`${API_BASE_URL}/auth/me`, {
         headers: { Authorization: `Bearer ${jwt}` },
       });
       if (res.ok) {

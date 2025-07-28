@@ -8,6 +8,7 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { API_BASE_URL } from "../utils/api";
 
 const markerIcons = {
   crime: new L.Icon({
@@ -69,7 +70,7 @@ export default function DebugCrimeRouteDemo() {
     }
     setLoading(true);
     try {
-      const res = await fetch("/api/routes/debug-crime-check", {
+      const res = await fetch(`${API_BASE_URL}/routes/debug-crime-check`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
